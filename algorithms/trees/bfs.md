@@ -28,7 +28,6 @@ BFS широко используется в различных приложен
 Вот упрощённый пример кода на Python для BFS на графе, представленном в виде списка смежности:
 
 ```python
-Copy code
 from collections import deque
 
 def bfs(graph, start):
