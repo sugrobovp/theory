@@ -67,7 +67,7 @@ class BingoCage:
 
 ## Модуль operator
 
-**Пример 1.1**:
+**Пример 1.1 (reduce через lambda)**:
 
 ```python
 from functions import reduce
@@ -77,9 +77,10 @@ def factorial(n):
     return reduce(lambda x, y: x*y, range(1, n+1))
 ```
 
-**Пример 1.2**
+**Пример 1.2 (reduce через mul)**
 
 ```python
+from functions import reduce
 from operator import mul
 
 def factorial(n):
@@ -87,10 +88,70 @@ def factorial(n):
     return reduce(mul, range(1, n+1))
 ```
 
+**Пример 2 (itemgetter)**
+
+```python
+from operator import itemgetter
+
+a = (
+    [1, 2, 3],
+    [3, 4, 8],
+    [5, 10, 13]
+)
+
+# itemgetter возвращает callable объект
+for _list in sorted(a, key=itemgetter(1)):
+    print(_list)
+```
+
+**Пример 3 (attrgetter)**
+
+**Определение**: attrgetter достает атрибут из класса
+
+```python
+from collections import namedtuple
+from operator import attrgetter
+
+# Определяем класс Dog
+Dog = namedtuple('Dog', 'name weight height')
+
+# name_height будет доставать вес и рост
+name_height = attrgetter('weight', 'height')
+
+# Данные по собакам
+dogs_data = [
+    ('James', '25kg', '61cm'),
+    ('Marie', '14kg', '55cm'),
+    ('Sam', '18kg', '70cm')
+]
+
+# Создаем объекты собак по данным
+dogs_objects = [
+    Dog(name, weight, height)
+    for name, weight, height in dogs_data
+]
+
+# Сортируем по весу и выводим name_height(имя и рост)
+for dog in sorted(dogs_objects, key=attrgetter('weight')):
+    print(name_height(dog))
+```
+
+## Фиксация аргументов с помощью functools.partial
+
+**Определение**: Partial принимает на входе вызываемый объект и возвращает новый вызываемый объект, в котором заранее предопределены несколько аргументов
+
+**Пример**
+
+```python
+from functools import partial
 
 
+# Изначально функция принимает 4 объекта
+def four_obj(a, b, c, d):
+    return a + b + c + d
 
-
-
-
-
+# Теперь новый callable объект ex принимает два объекта по дефолту - это 1 и 2 заместо a и b
+ex = partial(four_obj, 1, 2)
+# А еще два мы можем докидывать
+print(ex(3, 4))
+```
