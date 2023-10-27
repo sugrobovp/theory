@@ -105,6 +105,10 @@ books_ordered=Book.objects.filter(ordered__isnull=False)
 books_not_purchsed = books_in_carts.exclude(pk__in=books_ordered.values_list('pk', flat=True))
 ```
 
+```python
+
+```
+
 
 
 
